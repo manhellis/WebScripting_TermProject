@@ -15,6 +15,11 @@ Ideas,
 - animate on scroll 
 - can be used for simple effects in a quality layout
 
+# Parallax Home page
+https://atroposjs.com/
+https://rolly.maj.digital/
+https://github.com/alexfoxy/lax.js - comes with preset builder, but overall hard.
+
 
 # GSAP
 - for a variety of effects? and utility?
@@ -30,3 +35,13 @@ Ideas,
 
 # Bonus points
 Do an api call
+
+# Topics
+- Bubble tea
+- forest and tree low poly
+- cloud theme
+
+
+# # Page Overview
+# Homepage
+- 
