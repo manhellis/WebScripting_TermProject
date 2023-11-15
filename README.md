@@ -39,9 +39,13 @@ Do an api call
 # Topics
 - Bubble tea
 - forest and tree low poly
-- cloud theme
+- cloud theme'
+
+- orthographic style, of a cube of earth. or a small platform of forest that interacts with differnet libraries. click a button play a sound, etc.
 
 
 # # Page Overview
 # Homepage
-- 
+- Forest exploration, a 3d scene of a forest and you can click around to different pages.
+
+# # SVG Preloader
