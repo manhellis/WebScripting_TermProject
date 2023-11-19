@@ -5,7 +5,12 @@ import { AnimationMixer } from 'three';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer(
+	{
+		antialias: true,
+		alpha: true
+
+	});
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setClearColor( 0xffffff ); 
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -22,11 +27,8 @@ const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial( { color:
 
 const loader = new GLTFLoader();
 
-loader.load( '/koi_fish.glb', function ( gltf ) {
-    const mixer = new THREE.AnimationMixer( gltf.scene );
-	var action = mixer.clipAction( gltf.animations[ 0 ] );
-	action.play();
- 
+loader.load( '/Manh_scene6.glb', function ( gltf ) {
+    
 	scene.add( gltf.scene );
    
 
@@ -39,7 +41,10 @@ loader.load( '/koi_fish.glb', function ( gltf ) {
 scene.add( line );
 scene.add( cube );
 
-const light = new THREE.AmbientLight( 0x404040 , 100 ); // soft white light
+const light = new THREE.AmbientLight( 0x404040 , 40); // soft white light
+const light2 = new THREE.PointLight( 0x404040, 100, 100 );
+light2.position.set( 1, 2, 1.5);
+scene.add( light2 );
 scene.add( light );
 
 
@@ -47,7 +52,8 @@ scene.add( light );
 camera.position.z = 5;
 controls.update();
 
-
+cube.position.x = 3;
+line.position.x = 3;
 function animate() {
 	requestAnimationFrame( animate );
     controls.update();
