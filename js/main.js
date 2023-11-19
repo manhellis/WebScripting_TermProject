@@ -27,7 +27,7 @@ const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial( { color:
 
 const loader = new GLTFLoader();
 
-loader.load( '/Manh_scene6.glb', function ( gltf ) {
+loader.load( '/Manh_scene5.glb', function ( gltf ) {
     
 	scene.add( gltf.scene );
    
