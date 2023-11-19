@@ -49,3 +49,4 @@ Do an api call
 - Forest exploration, a 3d scene of a forest and you can click around to different pages.
 
 # # SVG Preloader
+ just an idea, can animate with motion libraries

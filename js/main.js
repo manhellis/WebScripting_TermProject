@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
+import { AnimationMixer } from 'three';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -23,11 +23,10 @@ const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial( { color:
 const loader = new GLTFLoader();
 
 loader.load( '/koi_fish.glb', function ( gltf ) {
-    gltf.animations; // Array<THREE.AnimaxtionClip>
-    gltf.scene; // THREE.Group
-    gltf.scenes; // Array<THREE.Group>
-    gltf.cameras; // Array<THREE.Camera>
-    gltf.asset; // Object
+    const mixer = new THREE.AnimationMixer( gltf.scene );
+	var action = mixer.clipAction( gltf.animations[ 0 ] );
+	action.play();
+ 
 	scene.add( gltf.scene );
    
 
@@ -52,7 +51,7 @@ controls.update();
 function animate() {
 	requestAnimationFrame( animate );
     controls.update();
-
+    
 	cube.rotation.x += 0.01;
 	cube.rotation.y += 0.01;
     line.rotation.x += 0.01;

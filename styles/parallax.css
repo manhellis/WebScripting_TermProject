@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+img {
+    position: absolute;
+    left: -15%;
+    top: -5%;
+    width: 130%;
+    height: 140%;
+    -o-object-fit: contain;
+    object-fit: contain;
+    display: block;
+    z-index: 1;
+    transform-style: preserve-3d;
+    pointer-events: none;
+    max-width: none;
+
+    bottom: 0 ;
+}
+
+.my-atropos {
+
+    width: 50svw;
+    height: 50svh;
+}
