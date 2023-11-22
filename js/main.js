@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { AnimationMixer } from 'three';
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const scene = new THREE.Scene();
 
@@ -35,7 +36,7 @@ const renderer = new THREE.WebGLRenderer(
 
 	});
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0x908E7F); 
+// renderer.setClearColor( 0x908E7F); 
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -82,22 +83,76 @@ scene.add( light );
 // const light2 = new THREE.PointLight( 0x404040, 100, 100 );
 // light2.position.set( 1, 2, 1.5);
 // scene.add( light2 );
+gsap.registerPlugin(ScrollTrigger);
 let target = new THREE.Vector3( 0, 0, 0 )
-let tl = gsap.timeline({paused: true})
+let tl = gsap.timeline({
+	
+	scrollTrigger: {
+		scroller: "body", // the element with CSS scroll snap
+        trigger: ".box1",
+        pin: true,
+        start: "top top", // when the top of the trigger hits the top of the viewport
+        end: "bottom",
+        scrub: true,
+	// 	trigger: ".box1",
+	// 	pin:true,
+	// 	start: "top top", // when the top of the trigger hits the top of the viewport
+	// 	end: "bottom center",
+	// 	scrub: true, // smooth scrubbing, takes 1 second to "catch up" to the scrollbar
+	// 	// toggleActions: "restart none none reverse"
+	// 	paused: true,
+	}
+})
 tl.to(controls.target, { // cow
 	duration: 1.5, 
 	x:-1.725, 
 	y: 1, 
 	z: 1.754, 
 	ease: "power2.inOut",
+	// scrollTrigger: {
+	// 	scroller: ".snap-y",
+	// 	trigger: ".box2",
+	// 	start: 'center 55%',
+	// 	markers: true,
+	// 	toggleActions: 'play complete restart reverse'
+	//   }, 
 	onUpdate: function() {
 		controls.update();
 		camera.lookAt( target );
 		camera.updateProjectionMatrix();
 	  }
+}); // 1 means 1st set of animations
+tl.to(camera,{
+	duration: 1,
+	zoom:3,
+	ease: "power2.inOut",
+	onUpdate: function() {
+		camera.updateProjectionMatrix();
+		controls.update();
+	  }
 });
-tl.to(controls.target, { // windmill
-	duration: 3, 
+
+
+let tl2 = gsap.timeline({
+	scrollTrigger: {
+		scroller: "body", // the element with CSS scroll snap
+		trigger: ".box2",
+		pin: true,
+		start: "top top", // when the top of the trigger hits the top of the viewport
+		end: "bottom",
+		scrub: true,
+	// 	trigger: ".box2",
+	// 	pin:true,
+	// 	start: "top top", // when the top of the trigger hits the top of the viewport
+	// 	end: "bottom center",
+	// 	scrub: true, // smooth scrubbing, takes 1 second to "catch up" to the scrollbar
+	// 	// toggleActions: "restart none none reverse"
+	// 	paused: true,
+	}
+})
+	
+tl2.to(controls.target, { // windmill
+	// duration: 2, 
 	x: -3.732, 
 	y: 3, 
 	z: -3.497, 
@@ -109,22 +164,45 @@ tl.to(controls.target, { // windmill
 		camera.updateProjectionMatrix();
 		controls.update();
 	  }
-});
-tl.to(controls.target, {
-	duration: 2, 
+},);
+
+// 
+gsap.to(controls.target, { // tree
+	// duration: 2, 
 	x: 2.068, 
 	y: 1, 
 	z: 2.558, 
 	
 	ease: "power2.inOut",
+	scrollTrigger: {
+		scroller: "body", // the element with CSS scroll snap
+		trigger: ".box3",
+		pin: true,
+		start: "top top", // when the top of the trigger hits the top of the viewport
+		end: "bottom",
+		scrub: true,
+	},
 	onUpdate: function() {
 		camera.lookAt( target );
 		
 		camera.updateProjectionMatrix();
 		controls.update();
-	  }
+	}
 });
-tl.to(camera,{
+
+let tl3 = gsap.timeline({
+	scrollTrigger: {
+		scroller: "body", // the element with CSS scroll snap
+		trigger: ".box4",
+		pin: true,
+		start: "top top", // when the top of the trigger hits the top of the viewport
+		end: "bottom",
+		scrub: true,
+	}
+});
+
+
+tl3.to(camera,{
 	duration: 1,
 	zoom:2,
 	ease: "power2.inOut",
@@ -132,7 +210,7 @@ tl.to(camera,{
 		camera.updateProjectionMatrix();
 		controls.update();
 	  }
-});
+},'final');
 
 const animateCamera = () => {
 	tl.play();
@@ -141,7 +219,7 @@ const animateCamera = () => {
 
 
 
-
+// animateCamera();
 // cube.position.x = 3;
 // line.position.x = 3;
 function animate() {
