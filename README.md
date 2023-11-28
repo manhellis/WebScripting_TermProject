@@ -50,3 +50,10 @@ Do an api call
 
 # # SVG Preloader
  just an idea, can animate with motion libraries
+
+npx tailwindcss -i ./styles/globals.css -o ./dist/output.css --watch
+
+
+finish scene
+finish anim points
+work on scrolling

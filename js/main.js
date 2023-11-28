@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+// import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { AnimationMixer } from 'three';
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,9 +12,9 @@ const frustumSize = 15;
 
 const aspect = window.innerWidth / window.innerHeight;
 // const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-const camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.1, 50 );
+const camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.001, 50 );
 camera.zoom = 1;
-camera.position.set( -6,4, 6 );
+camera.position.set( -12,8, 12 );
 camera.lookAt( 0, 0, 0 );
 
 
@@ -43,11 +43,11 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 
 
-const controls = new OrbitControls( camera, renderer.domElement );
-controls.enablePan = false;
-controls.enableDamping = true;
-controls.target.set( 0, 2, 0 );
-controls.update();
+// const controls = new OrbitControls( camera, renderer.domElement );
+// controls.enablePan = false;
+// controls.enableDamping = true;
+// controls.target.set( 0, 2, 0 );
+// controls.update();
 
 document.body.appendChild( renderer.domElement );
 // cube
@@ -61,6 +61,7 @@ document.body.appendChild( renderer.domElement );
 const loader = new GLTFLoader();
 
 loader.load( '/Manh_scene10.glb', function ( gltf ) {
+	gltf.scene.scale.set(2, 2, 2)
     const model = gltf.scene;
 	model.position.set( 0, 0, 0 );
 	scene.add( model );
@@ -88,9 +89,9 @@ let target = new THREE.Vector3( 0, 0, 0 )
 let tl = gsap.timeline({
 	
 	scrollTrigger: {
-		scroller: "body", // the element with CSS scroll snap
+		scroller: ".snap-y", // the element with CSS scroll snap
         trigger: ".box1",
-        pin: true,
+        // pin: true,
         start: "top top", // when the top of the trigger hits the top of the viewport
         end: "bottom",
         scrub: true,
@@ -103,11 +104,11 @@ let tl = gsap.timeline({
 	// 	paused: true,
 	}
 })
-tl.to(controls.target, { // cow
-	duration: 1.5, 
-	x:-1.725, 
-	y: 1, 
-	z: 1.754, 
+tl.to(camera.position, { // cow
+	// duration: 1.5, 
+	x:-10.725, 
+	y: 4, 
+	z: 10.754, 
 	ease: "power2.inOut",
 	// scrollTrigger: {
 	// 	scroller: ".snap-y",
@@ -117,27 +118,29 @@ tl.to(controls.target, { // cow
 	// 	toggleActions: 'play complete restart reverse'
 	//   }, 
 	onUpdate: function() {
-		controls.update();
+		// controls.update();
 		camera.lookAt( target );
 		camera.updateProjectionMatrix();
+		camera.updateMatrix();
 	  }
 }); // 1 means 1st set of animations
 tl.to(camera,{
-	duration: 1,
+	// duration: 1,
 	zoom:3,
 	ease: "power2.inOut",
 	onUpdate: function() {
 		camera.updateProjectionMatrix();
-		controls.update();
+		camera.updateMatrix();
+		// controls.update();
 	  }
 });
 
 
 let tl2 = gsap.timeline({
 	scrollTrigger: {
-		scroller: "body", // the element with CSS scroll snap
+		scroller: ".snap-y", // the element with CSS scroll snap
 		trigger: ".box2",
-		pin: true,
+		// pin: true,
 		start: "top top", // when the top of the trigger hits the top of the viewport
 		end: "bottom",
 		scrub: true,
@@ -151,33 +154,33 @@ let tl2 = gsap.timeline({
 	}
 })
 	
-tl2.to(controls.target, { // windmill
+tl2.to(camera.position, { // windmill
 	// duration: 2, 
-	x: -3.732, 
-	y: 3, 
-	z: -3.497, 
+	x: -4.732, 
+	y: 6, 
+	z: -6.497, 
 	
 	ease: "power2.inOut",
 	onUpdate: function() {
-		camera.lookAt( target );
-		
+		// camera.lookAt( target );
+		camera.updateMatrix();
 		camera.updateProjectionMatrix();
-		controls.update();
+		// controls.update();
 	  }
-},);
+});
 
 // 
-gsap.to(controls.target, { // tree
+gsap.to(camera.position, { // tree
 	// duration: 2, 
-	x: 2.068, 
-	y: 1, 
-	z: 2.558, 
+	x: 4.068, 
+	y: 4, 
+	z: 3.558, 
 	
 	ease: "power2.inOut",
 	scrollTrigger: {
-		scroller: "body", // the element with CSS scroll snap
+		scroller: ".snap-y", // the element with CSS scroll snap
 		trigger: ".box3",
-		pin: true,
+		// pin: true,
 		start: "top top", // when the top of the trigger hits the top of the viewport
 		end: "bottom",
 		scrub: true,
@@ -186,15 +189,16 @@ gsap.to(controls.target, { // tree
 		camera.lookAt( target );
 		
 		camera.updateProjectionMatrix();
-		controls.update();
+		camera.updateMatrix();
+		// controls.update();
 	}
 });
 
 let tl3 = gsap.timeline({
 	scrollTrigger: {
-		scroller: "body", // the element with CSS scroll snap
+		scroller: ".snap-y", // the element with CSS scroll snap
 		trigger: ".box4",
-		pin: true,
+		// pin: true,
 		start: "top top", // when the top of the trigger hits the top of the viewport
 		end: "bottom",
 		scrub: true,
@@ -203,14 +207,15 @@ let tl3 = gsap.timeline({
 
 
 tl3.to(camera,{
-	duration: 1,
-	zoom:2,
+	// duration: 1,
+	zoom: 2,
 	ease: "power2.inOut",
 	onUpdate: function() {
 		camera.updateProjectionMatrix();
-		controls.update();
+		camera.updateMatrix();
+		// controls.update();
 	  }
-},'final');
+});
 
 const animateCamera = () => {
 	tl.play();
@@ -224,7 +229,7 @@ const animateCamera = () => {
 // line.position.x = 3;
 function animate() {
 	requestAnimationFrame( animate );
-    controls.update();
+    // controls.update();
     
 	// cube.rotation.x += 0.01;
 	// cube.rotation.y += 0.01;
