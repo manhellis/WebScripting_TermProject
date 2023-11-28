@@ -1,9 +1,12 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { PMREMGenerator } from 'three/src/extras/PMREMGenerator.js';
 import { AnimationMixer } from 'three';
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+// import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const scene = new THREE.Scene();
 
@@ -11,23 +14,17 @@ const frustumSize = 15;
 
 
 const aspect = window.innerWidth / window.innerHeight;
-// const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-const camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.001, 50 );
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+// const camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.1, 50 );
 camera.zoom = 1;
-camera.position.set( -12,8, 12 );
-camera.lookAt( 0, 0, 0 );
+camera.position.set( -40,20, 95 );
+// camera.lookAt( -50,20,95 );
 
 
 window.addEventListener( 'resize', onWindowResize );
 
 
 
-
-document.querySelector('.cam1').addEventListener('click', (e) => {
-	animateCamera();
-	
-	console.log('clicked');
-});
 
 const renderer = new THREE.WebGLRenderer(
 	{
@@ -36,11 +33,17 @@ const renderer = new THREE.WebGLRenderer(
 
 	});
 renderer.setSize( window.innerWidth, window.innerHeight );
-// renderer.setClearColor( 0x908E7F); 
+renderer.setClearColor( 0x908E7F); 
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1;
+renderer.toneMappingExposure = 0.6;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
+const pmremGenerator = new THREE.PMREMGenerator( renderer );
+
+// const light = new THREE.AmbientLight( 0x404040 , 1); // soft white light
+// scene.add( light );
+scene.background = new THREE.Color( 0xbfe3dd );
+scene.environment = pmremGenerator.fromScene( new RoomEnvironment( renderer ), 0.04 ).texture;
 
 
 // const controls = new OrbitControls( camera, renderer.domElement );
@@ -60,10 +63,18 @@ document.body.appendChild( renderer.domElement );
 
 const loader = new GLTFLoader();
 
-loader.load( '/Manh_scene10.glb', function ( gltf ) {
+loader.load( '/ManhDiorama_scene.glb', function ( gltf ) {
 	gltf.scene.scale.set(2, 2, 2)
+	gltf.scene.traverse(function (child) {
+		if (child.isMesh) {
+			child.castShadow = true
+			child.receiveShadow = true
+		}
+	})
     const model = gltf.scene;
 	model.position.set( 0, 0, 0 );
+	model.rotation.set( 0, 90,0);
+	
 	scene.add( model );
    
 
@@ -77,150 +88,10 @@ loader.load( '/Manh_scene10.glb', function ( gltf ) {
 // scene.add( cube );
 
 
-const light = new THREE.AmbientLight( 0x404040 , 20); // soft white light
-scene.add( light );
 
 
-// const light2 = new THREE.PointLight( 0x404040, 100, 100 );
-// light2.position.set( 1, 2, 1.5);
-// scene.add( light2 );
-gsap.registerPlugin(ScrollTrigger);
-let target = new THREE.Vector3( 0, 0, 0 )
-let tl = gsap.timeline({
-	
-	scrollTrigger: {
-		scroller: ".snap-y", // the element with CSS scroll snap
-        trigger: ".box1",
-        // pin: true,
-        start: "top top", // when the top of the trigger hits the top of the viewport
-        end: "bottom",
-        scrub: true,
-	// 	trigger: ".box1",
-	// 	pin:true,
-	// 	start: "top top", // when the top of the trigger hits the top of the viewport
-	// 	end: "bottom center",
-	// 	scrub: true, // smooth scrubbing, takes 1 second to "catch up" to the scrollbar
-	// 	// toggleActions: "restart none none reverse"
-	// 	paused: true,
-	}
-})
-tl.to(camera.position, { // cow
-	// duration: 1.5, 
-	x:-10.725, 
-	y: 4, 
-	z: 10.754, 
-	ease: "power2.inOut",
-	// scrollTrigger: {
-	// 	scroller: ".snap-y",
-	// 	trigger: ".box2",
-	// 	start: 'center 55%',
-	// 	markers: true,
-	// 	toggleActions: 'play complete restart reverse'
-	//   }, 
-	onUpdate: function() {
-		// controls.update();
-		camera.lookAt( target );
-		camera.updateProjectionMatrix();
-		camera.updateMatrix();
-	  }
-}); // 1 means 1st set of animations
-tl.to(camera,{
-	// duration: 1,
-	zoom:3,
-	ease: "power2.inOut",
-	onUpdate: function() {
-		camera.updateProjectionMatrix();
-		camera.updateMatrix();
-		// controls.update();
-	  }
-});
 
 
-let tl2 = gsap.timeline({
-	scrollTrigger: {
-		scroller: ".snap-y", // the element with CSS scroll snap
-		trigger: ".box2",
-		// pin: true,
-		start: "top top", // when the top of the trigger hits the top of the viewport
-		end: "bottom",
-		scrub: true,
-	// 	trigger: ".box2",
-	// 	pin:true,
-	// 	start: "top top", // when the top of the trigger hits the top of the viewport
-	// 	end: "bottom center",
-	// 	scrub: true, // smooth scrubbing, takes 1 second to "catch up" to the scrollbar
-	// 	// toggleActions: "restart none none reverse"
-	// 	paused: true,
-	}
-})
-	
-tl2.to(camera.position, { // windmill
-	// duration: 2, 
-	x: -4.732, 
-	y: 6, 
-	z: -6.497, 
-	
-	ease: "power2.inOut",
-	onUpdate: function() {
-		// camera.lookAt( target );
-		camera.updateMatrix();
-		camera.updateProjectionMatrix();
-		// controls.update();
-	  }
-});
-
-// 
-gsap.to(camera.position, { // tree
-	// duration: 2, 
-	x: 4.068, 
-	y: 4, 
-	z: 3.558, 
-	
-	ease: "power2.inOut",
-	scrollTrigger: {
-		scroller: ".snap-y", // the element with CSS scroll snap
-		trigger: ".box3",
-		// pin: true,
-		start: "top top", // when the top of the trigger hits the top of the viewport
-		end: "bottom",
-		scrub: true,
-	},
-	onUpdate: function() {
-		camera.lookAt( target );
-		
-		camera.updateProjectionMatrix();
-		camera.updateMatrix();
-		// controls.update();
-	}
-});
-
-let tl3 = gsap.timeline({
-	scrollTrigger: {
-		scroller: ".snap-y", // the element with CSS scroll snap
-		trigger: ".box4",
-		// pin: true,
-		start: "top top", // when the top of the trigger hits the top of the viewport
-		end: "bottom",
-		scrub: true,
-	}
-});
-
-
-tl3.to(camera,{
-	// duration: 1,
-	zoom: 2,
-	ease: "power2.inOut",
-	onUpdate: function() {
-		camera.updateProjectionMatrix();
-		camera.updateMatrix();
-		// controls.update();
-	  }
-});
-
-const animateCamera = () => {
-	tl.play();
-	
-}
 
 
 
@@ -239,7 +110,77 @@ function animate() {
 	renderer.render( scene, camera );
 }
 
-animate();
+
+
+function createCameraAnimationTimeline() {
+    // Create a new timeline
+    const tl = gsap.timeline({paused: true});
+
+    // Define various target positions to animate to
+	tl.to(camera.position, {
+		x: -40,
+		y: 20,
+		z: 95,
+		duration: 2, // Customize duration as needed
+		ease: "power2.inOut",
+		onUpdate: () => {
+			// controls.target.set(-30, 20, 80);
+			// controls.update();
+		},
+		onComplete: () => controls.enabled = true
+	}).addLabel('position1');
+
+		// Animation to the second position
+	tl.to(camera.position, {
+		x: 40,
+		y: 20,
+		z: 80,
+		duration: 3, // Customize duration as needed
+		ease: "power2.inOut",
+		onUpdate: () => {
+			// controls.target.set(4, 20, 80);
+			// controls.update();
+		},
+		onComplete: () => controls.enabled = true
+	}).addLabel('position2');
+
+		// Animation to the third position
+	tl.to(camera.position, {
+		x: 100,
+		y: 20,
+		z: 50,
+		duration: 4, // Customize duration as needed
+		ease: "power2.inOut",
+		// onUpdate: () => controls.update(),
+		// onComplete: () => controls.enabled = true
+    }).addLabel('position3');
+
+    // Continue adding more positions if needed
+
+
+    return tl;
+}
+
+// Create the timeline
+const cameraAnimationTimeline = createCameraAnimationTimeline();
+
+// Event listener for button to animate to the first position
+document.querySelector('.cam1').addEventListener('click', () => {
+	// controls.enabled = false;
+    cameraAnimationTimeline.tweenTo('position1');
+});
+
+// Event listener for button to animate to the second position
+document.querySelector('.cam2').addEventListener('click', () => {
+	// controls.enabled = false;
+    cameraAnimationTimeline.tweenTo('position2');
+});
+
+// Event listener for button to animate to the third position
+document.querySelector('.cam3').addEventListener('click', () => {
+	// controls.enabled = false;
+    cameraAnimationTimeline.tweenTo('position3');
+});
 
 
 function onWindowResize() {
@@ -256,3 +197,4 @@ function onWindowResize() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 
 }
+animate();

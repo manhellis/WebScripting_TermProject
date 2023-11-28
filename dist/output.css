@@ -568,10 +568,6 @@ video {
   }
 }
 
-.fixed {
-  position: fixed;
-}
-
 .absolute {
   position: absolute;
 }
@@ -649,6 +645,10 @@ video {
   height: 100vh;
 }
 
+.w-1\/2 {
+  width: 50%;
+}
+
 .w-8 {
   width: 2rem;
 }
@@ -659,10 +659,6 @@ video {
 
 .w-screen {
   width: 100vw;
-}
-
-.w-1\/2 {
-  width: 50%;
 }
 
 .flex-shrink-0 {
@@ -679,14 +675,6 @@ video {
 
 .snap-mandatory {
   --tw-scroll-snap-strictness: mandatory;
-}
-
-.snap-proximity {
-  --tw-scroll-snap-strictness: proximity;
-}
-
-.snap-start {
-  scroll-snap-align: start;
 }
 
 .snap-center {
