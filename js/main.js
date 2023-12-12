@@ -16,8 +16,8 @@ const frustumSize = 15;
 const aspect = window.innerWidth / window.innerHeight;
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 // const camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.1, 50 );
-camera.zoom = 1;
-camera.position.set( -40,20, 95 );
+// camera.zoom = 1;
+// camera.position.set( -40,20, 95 );
 // camera.lookAt( -50,20,95 );
 
 
@@ -91,8 +91,11 @@ loader.load( '/ManhDiorama_scene.glb', function ( gltf ) {
 
 
 
-
-
+gsap.set(camera.position, {
+	x: -40,
+	y: 20,
+	z: 95
+});
 
 
 // animateCamera();
@@ -110,7 +113,9 @@ function animate() {
 	renderer.render( scene, camera );
 }
 
-
+const pos1 = document.querySelector('.pos1');
+const pos2 = document.querySelector('.pos2');
+const pos3 = document.querySelector('.pos3');
 
 function createCameraAnimationTimeline() {
     // Create a new timeline
@@ -127,7 +132,10 @@ function createCameraAnimationTimeline() {
 			// controls.target.set(-30, 20, 80);
 			// controls.update();
 		},
-		onComplete: () => controls.enabled = true
+		onComplete: () => {
+			showElement(pos1);
+			hideElement(pos2);
+		}
 	}).addLabel('position1');
 
 		// Animation to the second position
@@ -141,7 +149,11 @@ function createCameraAnimationTimeline() {
 			// controls.target.set(4, 20, 80);
 			// controls.update();
 		},
-		onComplete: () => controls.enabled = true
+		onComplete: () => {
+			hideElement(pos1);
+			hideElement(pos3);
+			showElement(pos2);
+		}
 	}).addLabel('position2');
 
 		// Animation to the third position
@@ -152,35 +164,44 @@ function createCameraAnimationTimeline() {
 		duration: 4, // Customize duration as needed
 		ease: "power2.inOut",
 		// onUpdate: () => controls.update(),
-		// onComplete: () => controls.enabled = true
+		onComplete: () => {
+			hideElement(pos2);
+			showElement(pos3);	
+		}
     }).addLabel('position3');
 
     // Continue adding more positions if needed
-
-
+	tl.paused(true);
     return tl;
 }
 
 // Create the timeline
 const cameraAnimationTimeline = createCameraAnimationTimeline();
-
+cameraAnimationTimeline.seek('position1');
 // Event listener for button to animate to the first position
 document.querySelector('.cam1').addEventListener('click', () => {
 	// controls.enabled = false;
-    cameraAnimationTimeline.tweenTo('position1');
+    cameraAnimationTimeline.tweenFromTo(cameraAnimationTimeline.currentLabel(),cameraAnimationTimeline.previousLabel());
+
+	
 });
 
 // Event listener for button to animate to the second position
 document.querySelector('.cam2').addEventListener('click', () => {
 	// controls.enabled = false;
-    cameraAnimationTimeline.tweenTo('position2');
+    cameraAnimationTimeline.tweenFromTo(cameraAnimationTimeline.currentLabel(),cameraAnimationTimeline.nextLabel());
+
 });
 
-// Event listener for button to animate to the third position
-document.querySelector('.cam3').addEventListener('click', () => {
-	// controls.enabled = false;
-    cameraAnimationTimeline.tweenTo('position3');
-});
+
+// turn the butons into delay based triggers for the html displays
+
+const hideElement = (element) => {
+	element.classList.add('hidden');
+}
+const showElement = (element) => {
+	element.classList.remove('hidden');
+}
 
 
 function onWindowResize() {
