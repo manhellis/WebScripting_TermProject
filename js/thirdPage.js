@@ -1,22 +1,23 @@
+let msnry = new Masonry("#masonry-grid", {
+    // options
+});
 
-
-const url = "https://ifsc.results.info/api/v1/info";
-
-fetch(url, {
-    method: 'GET',
-    headers: {
-        'Accept': 'application/json',
-        'Accept-Encoding': 'gzip, deflate, br', // Note: 'Accept-Encoding' is typically controlled by the browser
-        'Accept-Language': 'en-US,en;q=0.9',
-    }
-})
-    .then((response) => response.json())
-    .then((data) => {
-        displayData(data);
-    })
-    .catch((error) => console.error("Error:", error));
-
-function displayData(data) {
-    const container = document.getElementById("apiResponse");
-    container.innerHTML = JSON.stringify(data, null, 2); // Or format as needed
-}
+$(document).ready(function () {
+    $.ajax({
+        url: "https://dog.ceo/api/breeds/image/random",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            if (data.status === "success") {
+                $(".dogImageContainer").html(
+                    '<img src="' + data.message + '" alt="Random Dog" style=" height: 72px; object-fit: cover;" />'
+                );
+            } else {
+                $(".dogImageContainer").text("Failed to load image.");
+            }
+        },
+        error: function () {
+            $(".dogImageContainer").text("Error fetching data.");
+        },
+    });
+});

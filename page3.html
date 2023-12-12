@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./dist/output.css">
-    <link rel="stylesheet" href="cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <script type="module" src="cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
     <script src="./js/thirdPage.js" type="module"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
     <title>Page 3</title>
 </head>
-<body class="m-0 h-full overflow-hidden">
+<body class="m-0 h-full bg-slate-700 ">
     <nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">
         <div class="flex items-center flex-shrink-0 text-white mr-6">
             <span class="font-semibold text-xl">
@@ -22,9 +24,44 @@
             <a class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4" href="./parallax.html">Parallax</a>
             <a class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white" href="./page3.html">Third Page</a>
         </div>
+        <div class="dogImageContainer"></div>
     </nav>
-    <h1>test</h1>
-    <div id="apiResponse"></div>
+    <div class="grid grid-cols-3 gap-4 w-full  " id="masonry-grid">
+        <!-- Manually created image tags -->
+        <div class="masonry-item">
+            <img src="./img/img1.jpeg" alt="Image 1" class="w-[400px] object-cover">
+        </div>
+        <div class="masonry-item">
+            <img src="./img/img2.jpeg" alt="Image 2" class="w-[400px] object-cover">
+        </div>
+        <div class="masonry-item">
+            <img src="./img/img3.jpeg" alt="Image 3" class="w-[400px] object-cover">
+        </div>
+        <div class="masonry-item">
+            <img src="./img/img4.jpeg" alt="Image 4" class="w-[400px] object-cover">
+        </div>
+        <div class="masonry-item">
+            <img src="./img/img5.jpeg" alt="Image 5" class="w-[400px] object-cover">
+        </div>
+        <div class="masonry-item">
+            <img src="./img/img6.jpeg" alt="Image 6" class="w-[400px] object-cover">
+        </div>
+        <div class="masonry-item">
+            <img src="./img/img7.jpeg" alt="Image 7" class="w-[400px] object-cover">
+        </div>
+        <div class="masonry-item">
+            <img src="./img/img8.jpeg" alt="Image 8" class="w-[400px] object-cover">
+        </div>
+        <div class="masonry-item">
+            <img src="./img/img9.jpeg" alt="Image 9" class="w-[400px] object-cover">
+        </div>
+        <div class="masonry-item">
+            <img src="./img/img10.jpeg" alt="Image 10" class="w-[400px] object-cover">
+        </div>
+        <div class="masonry-item">
+            <img src="./img/img11.jpeg" alt="Image 11" class="w-[400px] object-cover">
+        </div>
+    </div>
 
   
 </body>
